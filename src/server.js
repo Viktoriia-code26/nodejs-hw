@@ -17,10 +17,6 @@ app.use(express.json());
 app.use(cors());
 app.use(notesRoutes);
 
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hello, World!' });
-});
-
 app.use(notFoundHandler);
 app.use(errorHandler);
 

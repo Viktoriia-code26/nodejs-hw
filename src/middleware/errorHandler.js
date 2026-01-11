@@ -4,8 +4,6 @@ import { HttpError } from 'http-errors';
 export const errorHandler = (err, req, res, next) => {
   if (req.log) {
     req.log.error(err);
-  } else {
-    console.error('Logging middleware not set up. Error:', err);
   }
 
   if (err instanceof HttpError) {
