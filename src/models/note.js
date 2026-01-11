@@ -1,4 +1,4 @@
-// src/models/student.js
+// src/models/note.js
 
 import { Schema } from 'mongoose';
 import { model } from 'mongoose';

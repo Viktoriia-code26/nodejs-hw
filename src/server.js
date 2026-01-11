@@ -2,8 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import { connectMongoDB } from './db/connectMongoDB';
-import { Note } from './models/note.js';
+import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -31,20 +30,7 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello, World!' });
 });
 
-app.get('/notes', async (req, res) => {
-  const notes = await Note.find();
-  res.status(200).json(notes);
-});
-
-app.get('/notes/:noteId', async (req, res) => {
-  const { noteId } = req.params;
-  const note = await Note.findById(noteId);
-  if (!note) {
-    return res.status(404).json({ message: 'Note not found' });
-  }
-  res.status(200).json(note);
-});
-
+app.use(notesRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
