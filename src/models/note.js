@@ -5,16 +5,12 @@ import { model } from 'mongoose';
 
 const noteSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    title: { type: String, required: true, trim: true },
+    content: { type: String, default: '', trim: true },
     tag: {
       type: String,
       default: 'Todo',
       enum: [
-        'Todo',
         'Work',
         'Personal',
         'Meeting',
@@ -24,6 +20,7 @@ const noteSchema = new Schema(
         'Finance',
         'Health',
         'Important',
+        'Todo',
       ],
     },
   },
@@ -32,12 +29,5 @@ const noteSchema = new Schema(
     versionKey: false,
   },
 );
-noteSchema.index(
-  { title: 'text', tag: 'text' },
-  {
-    name: 'NotesTextIndex',
-    weights: { title: 10, tag: 5 },
-    default_language: 'english',
-  },
-);
+
 export const Note = model('Note', noteSchema, 'notes');

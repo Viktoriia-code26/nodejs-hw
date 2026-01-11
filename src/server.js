@@ -12,25 +12,15 @@ const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 app.use(logger);
-app.use(
-  express.json({
-    type: ['application/json', 'application/vnd.api+json'],
-    limit: '100kb',
-  }),
-);
+app.use(express.json());
+
 app.use(cors());
 app.use(notesRoutes);
-
-app.use((req, res, next) => {
-  console.log(`Time: ${new Date().toLocaleString()}`);
-  next();
-});
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello, World!' });
 });
 
-app.use(notesRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
