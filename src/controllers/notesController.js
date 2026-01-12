@@ -11,15 +11,24 @@ export const getAllNotes = async (req, res, next) => {
 
     const skip = (pageNum - 1) * perPageNum;
 
-    const filter = {};
-    if (tag) filter.tag = tag;
-    if (typeof search === 'string' && search !== '') {
-      filter.$text = { $search: search };
+    let query = Note.find();
+
+    if (tag) {
+      query = query.where('tag').equals(tag);
     }
 
+    if (typeof search === 'string') {
+      const trimmed = search.trim();
+      if (trimmed !== '') {
+        query = query.where({ $text: { $search: trimmed } });
+      }
+    }
+
+    const countQuery = query.clone();
+
     const [totalNotes, notes] = await Promise.all([
-      Note.countDocuments(filter),
-      Note.find(filter).skip(skip).limit(perPageNum),
+      countQuery.countDocuments(),
+      query.skip(skip).limit(perPageNum),
     ]);
 
     const totalPages = Math.ceil(totalNotes / perPageNum);
