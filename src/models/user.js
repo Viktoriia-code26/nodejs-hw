@@ -7,6 +7,7 @@ const userSchema = new Schema(
     username: {
       type: String,
       trim: true,
+      required: false,
     },
     email: {
       type: String,
@@ -17,7 +18,11 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 8,
+    },
+    avtar: {
+      type: String,
+      required: false,
+      default: null,
     },
   },
   { timestamps: true, versionKey: false },
