@@ -3,7 +3,7 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/authenticate.js';
 import { updateUserAvatar } from '../controllers/userController.js';
-// Імпортуємо middleware
+
 import { upload } from '../middleware/multer.js';
 
 const router = Router();
