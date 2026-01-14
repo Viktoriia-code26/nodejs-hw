@@ -19,10 +19,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    avtar: {
+    avatar: {
       type: String,
       required: false,
-      default: null,
+      default: '<https://ac.goit.global/fullstack/react/default-avatar.jpg>',
     },
   },
   { timestamps: true, versionKey: false },

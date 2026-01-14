@@ -8,7 +8,7 @@ import createHttpError from 'http-errors';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { sendMail } from '../utils/sendMail.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -123,17 +123,17 @@ export const requestResetEmail = async (req, res, next) => {
   });
 
   try {
-    await sendMail({
+    await sendEmail({
       from: process.env.SMTP_FROM,
       to: email,
       subject: 'Reset your password',
       html,
     });
-  } catch {
-    next(
+  } catch (err) {
+    console.error('RESET EMAIL ERROR:', err);
+    return next(
       createHttpError(500, 'Failed to send the email, please try again later.'),
     );
-    return;
   }
 
   res.status(200).json({

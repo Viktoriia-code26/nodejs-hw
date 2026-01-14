@@ -1,5 +1,4 @@
 // src/controllers/userController.js
-
 import createHttpError from 'http-errors';
 import { User } from '../models/user.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
@@ -10,16 +9,20 @@ export const updateUserAvatar = async (req, res, next) => {
       return next(createHttpError(400, 'No file'));
     }
 
-    const result = await saveFileToCloudinary(req.file.buffer);
+    const uploadResult = await saveFileToCloudinary(req.file.buffer);
 
-    await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { avatar: result.secure_url },
+      { avatar: uploadResult.secure_url },
       { new: true },
     );
 
-    return res.status(200).json({ url: result.secure_url });
+    if (!updatedUser) {
+      return next(createHttpError(404, 'User not found'));
+    }
+
+    return res.status(200).json({ url: updatedUser.avatar });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
