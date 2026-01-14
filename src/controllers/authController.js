@@ -8,7 +8,7 @@ import createHttpError from 'http-errors';
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { sendEmail } from './utils/sendMail.js';
+import { sendMail } from '../utils/sendMail.js';
 
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -123,7 +123,7 @@ export const requestResetEmail = async (req, res, next) => {
   });
 
   try {
-    await sendEmail({
+    await sendMail({
       from: process.env.SMTP_FROM,
       to: email,
       subject: 'Reset your password',
